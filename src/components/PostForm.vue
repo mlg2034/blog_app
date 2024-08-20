@@ -2,24 +2,38 @@
     <div>
         <form @submit.prevent>
             <h4>Create a post</h4>
-            <input class="input" @input="post.title=$event.target.value" v-bind:value="post.title" type="text" placeholder="Type a title">
-            <input class="input" @input="post.body=$event.target.value" v-bind:value="post.body" type="text" placeholder="Type a body">
-            <button class="btn" >Create</button>
+            <my-input  v-model="post.title" type="text" placeholder="Type a title" />
+            <my-input class="input" v-model="post.body" type="text" placeholder="Type a body" />
+            <my-button @click="createPost" style="margin-top: 15px;">Create</my-button>
         </form>
     </div>
 </template>
 
 <script>
+    import MyButton from "@/components/UI/MyButton.vue"
+
 export default {
-
-
-    data(){
-        return{
-            post:{
-                title:'',
-                body:'',
+    components:{
+        MyButton
+    },
+    data() {
+        return {
+            post: {
+                title: '',
+                body: '',
             }
         }
+    },
+    methods: {
+        createPost() {
+            this.post.id = Date.now();
+            this.$emit('create', this.post)
+            this.post = {
+                title: '',
+                body: '',
+            }
+
+        },
     }
 }
 </script>
@@ -30,21 +44,4 @@ form {
     flex-direction: column
 }
 
-.btn {
-    align-self: flex-end;
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: none;
-    color: teal;
-    border: 1px solid teal;
-    border-radius: 8px;
-
-}
-
-.input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 2px solid teal;
-    margin-top: 10px;
-}
 </style>
